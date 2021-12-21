@@ -1,0 +1,14 @@
+{
+  "name": "mongo-smpl",
+  "version": "0.0.1",
+  "description": "mongodb simplified for nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "ardhihdra",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^4.2.2"
+  }
+}
