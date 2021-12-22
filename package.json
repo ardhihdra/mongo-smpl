@@ -1,5 +1,5 @@
 {
-  "name": "mongo-smpl",
+  "name": "ardhidhra-mongo-smpl",
   "version": "0.0.1",
   "description": "mongodb simplified for nodejs",
   "main": "index.js",
