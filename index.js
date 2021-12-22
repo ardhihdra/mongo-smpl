@@ -1,7 +1,7 @@
 "use strict";
-const mongo = require('./main')
+const {MongoClient} = require('./main')
 
 Object.defineProperty(exports, "__esModule", { value: true });
 
-Object.defineProperty(exports, "init", { enumerable: true, get: function () { return mongo.MongoClient; } });
+Object.defineProperty(exports, "init", { enumerable: true, get: function () { return MongoClient; } });
 
