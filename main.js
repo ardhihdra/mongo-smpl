@@ -1,7 +1,7 @@
 const mongodb = require('mongodb')
 
 class MongoClient {
-    constructor(host, port, uname, pwd, db, opt) {
+    constructor({connString, host, port, uname, pwd, db, opt}) {
         const dbhost = host ? host: process.env.MONGO_HOST
         const dbport = port ? port: process.env.MONGO_PORT
         const dbuname = uname ? encodeURIComponent(uname): encodeURIComponent(process.env.MONGO_USERNAME)
@@ -9,10 +9,10 @@ class MongoClient {
         const dbdb = db ? db: process.env.MONGO_DB || "admin"
         const dbopt = opt ? opt: process.env.MONGO_OPTION || '?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false'
         const auth = dbuname && dbpwd ? `${dbuname}:${dbpwd}@`: ''
-        const uri = `mongodb://${auth}${dbhost}:${dbport}/${dbdb}${dbopt}`
+        const uri = connString ? connString: `mongodb://${auth}${dbhost}:${dbport}/${dbdb}${dbopt}`
         
         this.client = new mongodb.MongoClient(uri)
-        this.host = dbhost
+        this.host = dbhost || connString
         this.port = dbport
         this.dbname = dbdb
         this.uri = uri
@@ -22,9 +22,9 @@ class MongoClient {
     async connect() {
         try {
             await this.client.connect();
-            await this.client.db(this.db).command({ ping: 1 });
+            await this.client.db(this.dbname).command({ ping: 1 });
             this.db = this.client.db(this.dbname);
-            console.log("Connected successfully to mongo :", `${this.host}:${this.port}/${this.dbname}`);
+            console.log("Connected successfully to mongo :", `${this.host}`);
         } catch(err) {
             // Ensures that the client will close when you finish/error
             console.log(err)
@@ -34,10 +34,12 @@ class MongoClient {
 
     async close() {
         await this.db.close();
-        console.log("Disconnected from :", `${this.host}:${this.port}/${this.dbname}`);
+        console.log("Disconnected from :", `${this.host}`);
     }
 
     async findOne(collection, data) {
+        const connection = this.db.serverConfig.isConnected()
+        if(!connection) throw new Error("Not connected to mongo server")
         try {
             const res = await this.db.collection(collection).findOne(data).catch(err => {throw err})
             return res
