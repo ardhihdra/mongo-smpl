@@ -14,7 +14,7 @@ class MongoClient {
         this.client = new mongodb.MongoClient(uri)
         this.host = dbhost || connString
         this.port = dbport
-        this.dbname = dbdb
+        this.dbname = uri.split('/')[3].split('?')[0]
         this.uri = uri
         this.db = null
     }

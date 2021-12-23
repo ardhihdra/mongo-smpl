@@ -1,6 +1,6 @@
 {
   "name": "ardhihdra-mongo-smpl",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "mongodb simplified for nodejs",
   "main": "index.js",
   "scripts": {
