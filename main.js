@@ -38,8 +38,6 @@ class MongoClient {
     }
 
     async findOne(collection, data) {
-        const connection = this.db.serverConfig.isConnected()
-        if(!connection) throw new Error("Not connected to mongo server")
         try {
             const res = await this.db.collection(collection).findOne(data).catch(err => {throw err})
             return res
